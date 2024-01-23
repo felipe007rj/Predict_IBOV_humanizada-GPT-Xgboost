@@ -4,6 +4,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import yfinance as yf
 import joblib
+import random
+import openai
 
 def process_stock_data(ticker):
     # Usando o yfinance para obter os dados
@@ -63,6 +65,54 @@ def update_users_news_description(signal):
     conn.commit()
     cursor.close()
     conn.close()
+
+##################  Resposta humanizada pelo CHATGPT  ########################
+
+# def update_users_news_description(signal):
+#     # Conecte-se ao banco de dados
+#     conn = sqlite3.connect('teste.db')
+#     cursor = conn.cursor()
+
+#     # Obter os registros que atendem ao critério
+#     cursor.execute(f'SELECT id, name FROM users WHERE poupança > "9000";')
+#     rows = cursor.fetchall()
+
+#     # Atualizar a coluna news_description com base no sinal e no nome do usuário
+#     for row in rows:
+#         user_id = row[0]
+#         user_name = row[1]
+
+#         # Variações para {user_name} e {signal}
+#         user_name_variations = [user_name, f"{user_name} amigo", f"{user_name} investidor"]
+#         signal_variations = [signal, "compra", "venda"]
+
+#         # Escolher aleatoriamente variações
+#         selected_user_name = random.choice(user_name_variations)
+#         selected_signal = random.choice(signal_variations)
+
+#         # Criar uma mensagem com variações
+#         prompt = f"Olá, {selected_user_name}! De acordo com a inteligência artificial, hoje é um bom dia para {selected_signal} de ações da Petrobras."
+
+#         # Usar a API do ChatGPT para obter uma resposta
+#         response = openai.Completion.create(
+#             engine="text-davinci-002",
+#             prompt=prompt,
+#             temperature=0.7,
+#             max_tokens=150
+#         )
+
+#         # Obter a resposta da API e atualizar a descrição de notícias no banco de dados
+#         generated_response = response.choices[0].text.strip()
+
+#         # Adicionar a resposta gerada à descrição final
+#         news_description = f"{generated_response}"
+
+#         cursor.execute(f'UPDATE users SET news_description = ? WHERE id = ?', (news_description, user_id))
+
+#     conn.commit()
+#     cursor.close()
+#     conn.close()
+
 
 if __name__ == "__main__":
     update_users_news_description()
